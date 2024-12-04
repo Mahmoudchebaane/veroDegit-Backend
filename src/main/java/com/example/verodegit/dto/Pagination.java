@@ -7,6 +7,16 @@ public class Pagination {
     private int limit;
     private int offset;
     private int totalPages;
+
+    @JsonProperty("total")
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
     private int currentPage;
     private String nextUrl;
 

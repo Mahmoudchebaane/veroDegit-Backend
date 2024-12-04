@@ -21,18 +21,22 @@ public class ExternalApiService {
         this.webClient = webClient;
     }
 
+    public ApiResponse getArtworks(String query, int page, int limit) {
+        // Construire l'URL avec pagination
+        String URL = externalApiUrl +
+                (query != null ? "/search?q=" + query : "?") +
+                "&fields=id,title,artist_title,description,date_display,place_of_origin,image_id,main_reference_number,artist_display" +
+                "&page=" + page +
+                "&limit=" + limit;
 
-
-    public List<Artwork> getArtworks(String query) {
-
-        String URL = externalApiUrl + (query != null ? "/search?q=" + query : "");
-        // Utilisation de WebClient pour effectuer un appel GET à l'API externe
+        // Utilisation de WebClient pour effectuer l'appel à l'API externe
         return webClient
                 .get()
                 .uri(URL)
                 .retrieve()
                 .bodyToMono(ApiResponse.class) // Récupérer toute la réponse
-                .map(ApiResponse::getData)    // Extraire uniquement "data"
                 .block();
     }
+
+
 }

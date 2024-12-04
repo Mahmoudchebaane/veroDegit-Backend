@@ -1,10 +1,9 @@
 package com.example.verodegit.controller;
 
-import com.example.verodegit.dto.Artwork;
+import com.example.verodegit.dto.ApiResponse;
 import com.example.verodegit.service.ExternalApiService;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
@@ -13,15 +12,20 @@ import java.util.List;
 public class ArtWorkController {
 
     private final ExternalApiService externalApiService;
-    private static final Logger logger = LoggerFactory.getLogger(ArtWorkController.class);
 
 
     public ArtWorkController(ExternalApiService externalApiService) {
         this.externalApiService = externalApiService;
     }
+
     @CrossOrigin(origins = "http://localhost:3001") // Autoriser uniquement localhost:3001
     @GetMapping
-    public List<Artwork> getArtWorks(@RequestParam(required = false) String search){
-        return externalApiService.getArtworks(search);
+    public ApiResponse getArtWorks(
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "1") int page,  // Page par défaut : 1
+            @RequestParam(defaultValue = "12") int limit // Limite par défaut : 10 résultats
+    ) {
+        return externalApiService.getArtworks(search, page, limit);
     }
+
 }
